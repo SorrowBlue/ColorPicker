@@ -18,6 +18,7 @@ jobs:
         with:
           java-version: 11
       - run: ./gradlew lint
+      - run: ./gradlew mergeXml
       - uses: yutailang0119/action-android-lint@v1.0.2
         with:
           xml_path: build/merged-lint-result.xml
