@@ -4,3 +4,4 @@
 
 rootProject.name = "ColorPicker"
 include(":app")
+include(":colorpicker")

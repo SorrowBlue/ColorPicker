@@ -3,7 +3,7 @@
  */
 
 plugins {
-    ComAndroidPluginGroup(this).application
+    ComAndroidPluginGroup(this).library
     `kotlin-android`
 }
 
@@ -12,12 +12,13 @@ android {
     buildToolsVersion("30.0.3")
 
     defaultConfig {
-        applicationId = "com.sorrowblue.colorpicker"
         minSdkVersion(26)
         targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -48,8 +49,26 @@ dependencies {
     implementation("androidx.core:core-ktx:1.3.2")
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("com.google.android.material:material:1.3.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     testImplementation("junit:junit:4.13.1")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
+}
+
+tasks.register("mergeXml") {
+    val reportDir = File(rootDir, "./build/reports")
+    if (reportDir.listFiles().isNullOrEmpty()) {
+        return@register
+    }
+    File(rootDir, "./build/merged-lint-result.xml").createNewFile()
+    File(rootDir, "./build/merged-lint-result.xml").writeText(reportDir.listFiles()!!.first()!!.readText())
+    doLast {
+        reportDir.listFiles()?.drop(1)?.forEach {
+            val origin = File(rootDir, "./build/merged-lint-result.xml").readText()
+            XmlUtility.mergeSaveXml(
+                origin,
+                it.readText(),
+                File(rootDir, "./build/merged-lint-result.xml").absolutePath
+            )
+        }
+    }
 }

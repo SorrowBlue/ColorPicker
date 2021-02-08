@@ -3,5 +3,10 @@
     <module2copyright>
       <element module="All" copyright="SorrowBlue" />
     </module2copyright>
+    <LanguageOptions name="XML">
+      <option name="fileTypeOverride" value="3" />
+      <option name="block" value="false" />
+      <option name="prefixLines" value="false" />
+    </LanguageOptions>
   </settings>
 </component>
